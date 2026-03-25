@@ -83,70 +83,102 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(20px);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
+    padding: 0 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    height: 56px;
+    gap: 16px;
   }
 
   .logo {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
-    letter-spacing: -0.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .logo-dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background: var(--accent);
     border-radius: 50%;
-    box-shadow: 0 0 12px var(--accent);
-    animation: pulse 2s infinite;
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2.5s infinite;
+    flex-shrink: 0;
   }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
   }
 
   .header-right {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .date-display {
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
   .search-bar {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 14px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding: 6px 10px 6px 28px;
     color: var(--text);
     font-family: var(--font-body);
     font-size: 13px;
-    width: 220px;
+    width: 200px;
     outline: none;
     transition: all 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6b85' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 6px center;
   }
   .search-bar:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--glow);
+    border-bottom-color: var(--accent);
+    width: 240px;
   }
-  .search-bar::placeholder { color: var(--text-muted); }
+  .search-bar::placeholder { color: var(--text-dim); }
+
+  .btn-sm {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s;
+    font-family: var(--font-body);
+    letter-spacing: 0.3px;
+  }
+  .btn-sm:hover { border-color: var(--border-bright); color: var(--text); }
 
   /* ===== LAYOUT ===== */
   .app {
@@ -1083,10 +1115,11 @@
   }
 
   @media (max-width: 480px) {
-    header { padding: 0 14px; height: 52px; }
-    .search-bar { width: 120px; font-size: 12px; padding: 6px 10px; }
+    header { padding: 0 14px; height: 52px; gap: 8px; }
+    .search-bar { width: 100px; font-size: 12px; }
+    .search-bar:focus { width: 130px; }
     .date-display { display: none; }
-    .btn-sm { padding: 6px 10px; font-size: 11px; }
+    .btn-sm { padding: 5px 8px; font-size: 10px; }
 
     .app { height: calc(100vh - 52px); }
 
@@ -1539,7 +1572,7 @@
 
 <!-- HEADER -->
 <header>
-  <div style="display:flex;align-items:center;gap:10px;">
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
     <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()">
       <span></span><span></span><span></span>
     </button>
@@ -1548,7 +1581,9 @@
       BRAIN<span style="color:var(--accent)">OS</span>
     </div>
   </div>
-  <input class="search-bar" type="text" placeholder="⌘ Buscar em tudo..." id="globalSearch" oninput="handleSearch(this.value)">
+  <div class="header-center">
+    <input class="search-bar" type="text" placeholder="Buscar..." id="globalSearch" oninput="handleSearch(this.value)">
+  </div>
   <div class="header-right">
     <div class="date-display" id="dateDisplay"></div>
     <button class="btn-sm" onclick="exportData()">⬇ Exportar</button>
