@@ -165,7 +165,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background: rgba(10,10,15,0.5);
+    background: #0d0d14;
   }
 
   .sidebar-section {
@@ -1088,43 +1088,36 @@
     .date-display { display: none; }
     .btn-sm { padding: 6px 10px; font-size: 11px; }
 
-    .app { 
-      height: calc(100vh - 52px);
-      flex-direction: row; /* mantém row para o main ocupar tudo */
-    }
+    .app { height: calc(100vh - 52px); }
 
-    /* Sidebar vira drawer deslizante no mobile */
+    /* Sidebar ocupa 100% da tela — sem overlay, sem blur possível */
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: -280px;
-      width: 260px;
-      height: 100vh;
-      z-index: 400;
-      transition: left 0.28s cubic-bezier(0.4,0,0.2,1);
-      border-right: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 8px 0 40px rgba(0,0,0,0.8);
-      overflow-y: auto;
-      padding-top: 0;
-      background: #0d0d14;
-      display: flex !important;
-      flex-direction: column;
-      min-width: unset;
-    }
-    .sidebar.open { left: 0; }
-
-    /* Overlay escuro atrás do drawer */
-    .sidebar-overlay {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.85);
-      z-index: 399;
+      z-index: 9999;
+      background: #0d0d14;
+      display: flex !important;
+      flex-direction: column;
+      min-width: unset;
+      overflow-y: auto;
+      padding-top: 0;
+      border-right: none;
+      transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      -webkit-transition: -webkit-transform 0.3s ease;
+      will-change: transform;
     }
-    .sidebar-overlay.show { display: block; }
+    .sidebar.open {
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+    }
+
+    /* Overlay desativado — sidebar cobre tudo */
+    .sidebar-overlay { display: none !important; }
 
     .main {
       padding: 16px 14px 24px 14px;
@@ -1151,11 +1144,7 @@
     .captures-grid { grid-template-columns: repeat(2, 1fr); }
     .trading-grid { grid-template-columns: 1fr; }
 
-    .income-row {
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 14px;
-    }
+    .income-row { flex-wrap: wrap; gap: 10px; padding: 14px; }
     .income-info { min-width: 0; flex: 1 1 100%; order: 1; }
     .income-emoji { order: 0; }
     .income-status { order: 2; }
@@ -1164,7 +1153,6 @@
     .quick-capture { bottom: 20px; right: 14px; }
     .quick-btn { width: 48px; height: 48px; font-size: 20px; }
 
-    /* Modal full screen on mobile */
     .modal-overlay { align-items: flex-end; }
     .modal {
       width: 100%;
@@ -1174,7 +1162,6 @@
       padding: 20px 18px;
     }
 
-    /* Kanban cols scroll horizontal */
     .kanban {
       display: flex;
       overflow-x: auto;
@@ -1182,27 +1169,15 @@
       padding-bottom: 8px;
       scroll-snap-type: x mandatory;
     }
-    .kanban-col {
-      min-width: 260px;
-      scroll-snap-align: start;
-      flex-shrink: 0;
-    }
+    .kanban-col { min-width: 260px; scroll-snap-align: start; flex-shrink: 0; }
 
     div[style*="grid-template-columns:1fr 1fr"] {
       display: grid !important;
       grid-template-columns: 1fr !important;
     }
 
-    /* Hamburger button visível no mobile */
-    .hamburger-btn {
-      display: flex !important;
-    }
-
-    /* Mostrar add-btn dentro da sidebar no mobile */
-    .add-btn { 
-      display: flex;
-      margin-top: 16px;
-    }
+    .hamburger-btn { display: flex !important; }
+    .add-btn { display: flex; margin-top: 16px; }
   }
 
   /* Hamburger button - hidden on desktop */
@@ -2788,28 +2763,14 @@ function showToast(msg) {
 // ===== SIDEBAR DRAWER (mobile) =====
 function toggleSidebar() {
   const sidebar = document.querySelector('.sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  const main = document.querySelector('.main');
-  const header = document.querySelector('header');
   const isOpen = sidebar.classList.contains('open');
   sidebar.classList.toggle('open', !isOpen);
-  overlay.classList.toggle('show', !isOpen);
   document.body.style.overflow = isOpen ? '' : 'hidden';
-  // iOS fix: esconde conteúdo atrás para evitar blur
-  if (main) main.style.visibility = isOpen ? '' : 'hidden';
-  if (header) header.style.visibility = isOpen ? '' : 'hidden';
 }
 
 function closeSidebar() {
-  const sidebar = document.querySelector('.sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  const main = document.querySelector('.main');
-  const header = document.querySelector('header');
-  sidebar.classList.remove('open');
-  overlay.classList.remove('show');
+  document.querySelector('.sidebar').classList.remove('open');
   document.body.style.overflow = '';
-  if (main) main.style.visibility = '';
-  if (header) header.style.visibility = '';
 }
 
 // Fechar sidebar ao navegar (mobile)
