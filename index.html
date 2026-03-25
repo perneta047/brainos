@@ -1090,12 +1090,13 @@
 
     .app { height: calc(100vh - 52px); }
 
-    /* Sidebar ocupa 100% da tela — sem overlay, sem blur possível */
+    /* Sidebar — metade da tela, desliza da esquerda */
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 75vw;
+      max-width: 300px;
       height: 100vh;
       z-index: 9999;
       background: #0d0d14;
@@ -1104,20 +1105,30 @@
       min-width: unset;
       overflow-y: auto;
       padding-top: 0;
-      border-right: none;
+      border-right: 1px solid rgba(255,255,255,0.08);
       transform: translateX(-100%);
       -webkit-transform: translateX(-100%);
       transition: transform 0.3s ease;
       -webkit-transition: -webkit-transform 0.3s ease;
       will-change: transform;
+      box-shadow: none;
     }
     .sidebar.open {
       transform: translateX(0);
       -webkit-transform: translateX(0);
+      box-shadow: 6px 0 30px rgba(0,0,0,0.9);
     }
 
-    /* Overlay desativado — sidebar cobre tudo */
-    .sidebar-overlay { display: none !important; }
+    /* Overlay sólido atrás da sidebar */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.88);
+      z-index: 9998;
+    }
+    .sidebar-overlay.show { display: block; }
 
     .main {
       padding: 16px 14px 24px 14px;
@@ -1139,10 +1150,24 @@
     .stat-value { font-size: 24px; }
 
     .notes-grid { grid-template-columns: 1fr; }
-    .kanban { grid-template-columns: 1fr; }
     .projects-grid { grid-template-columns: 1fr; }
     .captures-grid { grid-template-columns: repeat(2, 1fr); }
     .trading-grid { grid-template-columns: 1fr; }
+
+    /* Kanban — colunas verticais empilhadas */
+    .kanban {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px;
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+    .kanban-col {
+      min-width: unset !important;
+      width: 100% !important;
+      flex-shrink: unset;
+      scroll-snap-align: unset;
+    }
 
     .income-row { flex-wrap: wrap; gap: 10px; padding: 14px; }
     .income-info { min-width: 0; flex: 1 1 100%; order: 1; }
@@ -1161,15 +1186,6 @@
       border-radius: 20px 20px 0 0;
       padding: 20px 18px;
     }
-
-    .kanban {
-      display: flex;
-      overflow-x: auto;
-      gap: 12px;
-      padding-bottom: 8px;
-      scroll-snap-type: x mandatory;
-    }
-    .kanban-col { min-width: 260px; scroll-snap-align: start; flex-shrink: 0; }
 
     div[style*="grid-template-columns:1fr 1fr"] {
       display: grid !important;
@@ -2763,13 +2779,17 @@ function showToast(msg) {
 // ===== SIDEBAR DRAWER (mobile) =====
 function toggleSidebar() {
   const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
   const isOpen = sidebar.classList.contains('open');
   sidebar.classList.toggle('open', !isOpen);
+  if (overlay) overlay.classList.toggle('show', !isOpen);
   document.body.style.overflow = isOpen ? '' : 'hidden';
 }
 
 function closeSidebar() {
   document.querySelector('.sidebar').classList.remove('open');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (overlay) overlay.classList.remove('show');
   document.body.style.overflow = '';
 }
 
