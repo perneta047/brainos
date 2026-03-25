@@ -1585,9 +1585,6 @@
     <input class="search-bar" type="text" placeholder="Buscar..." id="globalSearch" oninput="handleSearch(this.value)">
   </div>
   <div class="header-right">
-    <div class="date-display" id="dateDisplay"></div>
-    <button class="btn-sm" onclick="exportData()">⬇ Exportar</button>
-    <button class="btn-sm" onclick="importData()">⬆ Importar</button>
     <div class="user-avatar" id="user-avatar" onclick="handleLogout()" title="Sair">R</div>
   </div>
 </header>
@@ -1657,6 +1654,19 @@
     </div>
 
     <button class="add-btn" onclick="openModal()">+ Nova Captura</button>
+
+    <!-- Ações no fundo da sidebar -->
+    <div style="margin: 8px 16px 20px; display:flex; flex-direction:column; gap:6px; border-top: 1px solid var(--border); padding-top:16px;">
+      <button onclick="exportData(); closeSidebar();" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:9px 12px;font-family:var(--font-body);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;width:100%;" onmouseover="this.style.borderColor='var(--border-bright)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+        ⬇ Exportar dados
+      </button>
+      <button onclick="importData(); closeSidebar();" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:9px 12px;font-family:var(--font-body);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;width:100%;" onmouseover="this.style.borderColor='var(--border-bright)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">
+        ⬆ Importar dados
+      </button>
+      <button onclick="handleLogout();" style="background:transparent;border:1px solid rgba(255,77,107,0.2);color:var(--text-muted);border-radius:8px;padding:9px 12px;font-family:var(--font-body);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.15s;width:100%;" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='rgba(255,77,107,0.2)';this.style.color='var(--text-muted)'">
+        ↩ Sair da conta
+      </button>
+    </div>
   </nav>
 
   <!-- MAIN -->
