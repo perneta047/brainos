@@ -1096,16 +1096,16 @@
     /* Sidebar vira drawer deslizante no mobile */
     .sidebar {
       position: fixed;
-      top: 52px;
+      top: 0;
       left: -280px;
       width: 260px;
-      height: calc(100vh - 52px);
-      z-index: 300;
+      height: 100vh;
+      z-index: 400;
       transition: left 0.28s cubic-bezier(0.4,0,0.2,1);
-      border-right: 1px solid var(--border-bright);
-      box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+      border-right: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 8px 0 40px rgba(0,0,0,0.8);
       overflow-y: auto;
-      padding-top: 12px;
+      padding-top: 0;
       background: #0d0d14;
       display: flex !important;
       flex-direction: column;
@@ -1117,10 +1117,12 @@
     .sidebar-overlay {
       display: none;
       position: fixed;
-      inset: 0;
-      top: 52px;
-      background: rgba(0,0,0,0.7);
-      z-index: 299;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 399;
     }
     .sidebar-overlay.show { display: block; }
 
@@ -1233,10 +1235,14 @@
   .sidebar-overlay {
     display: none;
     position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
     z-index: 299;
-    backdrop-filter: blur(2px);
   }
   .sidebar-overlay.show { display: block; }
 
