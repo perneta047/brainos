@@ -2789,16 +2789,27 @@ function showToast(msg) {
 function toggleSidebar() {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebar-overlay');
+  const main = document.querySelector('.main');
+  const header = document.querySelector('header');
   const isOpen = sidebar.classList.contains('open');
   sidebar.classList.toggle('open', !isOpen);
   overlay.classList.toggle('show', !isOpen);
   document.body.style.overflow = isOpen ? '' : 'hidden';
+  // iOS fix: esconde conteúdo atrás para evitar blur
+  if (main) main.style.visibility = isOpen ? '' : 'hidden';
+  if (header) header.style.visibility = isOpen ? '' : 'hidden';
 }
 
 function closeSidebar() {
-  document.querySelector('.sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('show');
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const main = document.querySelector('.main');
+  const header = document.querySelector('header');
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
   document.body.style.overflow = '';
+  if (main) main.style.visibility = '';
+  if (header) header.style.visibility = '';
 }
 
 // Fechar sidebar ao navegar (mobile)
